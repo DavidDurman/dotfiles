@@ -302,6 +302,12 @@ If the new path's directories does not exist, create them."
 
 ;;(require 'jabber) ; I think it's clear
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Run at startup
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;(shell)
+;(ansi-term)     ;; shell
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Map file suffixes to modes
