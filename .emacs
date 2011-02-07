@@ -14,7 +14,8 @@
 
 ; highlight current line 
 (global-hl-line-mode t)
-(set-face-background 'hl-line "#545454")
+;(set-face-background 'hl-line "#545454")
+(set-face-background 'hl-line "#111111")
 ;(set-face-background 'hl-line "#5d5d5d")
 
 ; show line/column number in status bar
@@ -74,12 +75,20 @@ If the new path's directories does not exist, create them."
 ;; disable menu-bar and tool-bar
 (menu-bar-mode 0)
 (tool-bar-mode 0)
+(scroll-bar-mode 0)
+(blink-cursor-mode 0)
+(setq fringe-mode "none")
 
 (setq tramp-default-method "ftp")
 
 ;; set default font
 ;(set-default-font "Bitstream Vera Sans Mono-10")
-(set-default-font "DejaVu Sans Mono-10")
+;(set-default-font "DejaVu Sans Mono-10")
+; INSTALL: download http://www.gringod.com/wp-upload/software/Fonts/Monaco_Linux.ttf
+;          sudo mkdir /usr/share/fonts/truetype/custom; 
+;          sudo mv Monaco_linux.ttf /usr/share/fonts/truetype/custom; 
+;          sudo fc-cache -f -v
+(set-default-font "Monaco-10")
 
 ;; Indent using spaces instead of tabs
 ;(setq-default c-basic-indent 2)
@@ -100,8 +109,11 @@ If the new path's directories does not exist, create them."
 ;;(setq php-manual-path "~/.emacs.d/php/php-manual/html")
 
 ;; default to better frame titles
-(setq frame-title-format
-      (concat  "%b - emacs@" (system-name)))
+;(setq frame-title-format
+;      (concat  "%b - emacs@" (system-name)))
+; if filename is available, show it in title bar, otherwise, show buffer name
+(setq frame-title-format '(buffer-file-name "%f" ("%b")))
+
 (setq diff-switches "-u")		; default to unified diffs
 (column-number-mode t)			; column number in statusbar
 (setq vc-handled-backends '(CVS RCS SCCS)) ; version control system; default is: `(RCS CVS SCCS)
@@ -122,7 +134,9 @@ If the new path's directories does not exist, create them."
 
 ; color theme
 (require 'color-theme)
-(color-theme-gray30)
+(color-theme-initialize)
+;(color-theme-gray30)
+(color-theme-jsc-dark)
 
 ;; emacs transparency
 
@@ -159,10 +173,21 @@ If the new path's directories does not exist, create them."
 
 ; icicles @todo Look for it, it's great! Project like completion, searching, ...
 
+;; JSP Mode
+; Tell emacs where to find the code for jsp-mode
+;(autoload 'anjsp-mode "jsp" "JSP" t)
+; Tell emacs to use jsp-mode for .jsp files
+(add-to-list 'auto-mode-alist '("\\.jsp\\'" . anjsp-mode))
+(add-to-list 'auto-mode-alist '("\\.tag\\'" . anjsp-mode))
+
 ;; DEVSML
 ;;(autoload 'xml-mode "xml-mode")
 ;;(setq auto-mode-alist
 ;;      (cons '("\\.devsml\\'" . xml-mode) auto-mode-alist))
+
+;; Less mode (less css stylesheets)
+(require 'less-mode)
+(add-to-list 'auto-mode-alist '("\\.less$" . less-mode))
 
 ;; better indentation than js2-mode
 (autoload 'espresso-mode "espresso")
@@ -236,7 +261,7 @@ If the new path's directories does not exist, create them."
 
 (defun my-js2-mode-hook ()
   (require 'espresso)
-  (setq espresso-indent-level 4
+  (setq espresso-indent-level 2 ;; only this is the indentation!!!
         indent-tabs-mode nil
         c-basic-offset 4)
   (c-toggle-auto-state 0)
@@ -445,11 +470,16 @@ If the new path's directories does not exist, create them."
      (newline)                             ; insert a newline
      (switch-to-buffer nil))               ; return to the initial buffer
 
+(defun close-all-buffers ()
+  (interactive)
+  (mapc 'kill-buffer (buffer-list)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Key shortcuts.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(global-set-key "\C-cx" 'close-all-buffers)
 (global-set-key "\C-c\C-k" 'comment-create)
 (global-set-key "\C-c\C-l" 'comment-end)
 (global-set-key "\C-ci" 'indent-buffer)
@@ -484,8 +514,11 @@ If the new path's directories does not exist, create them."
   ;; If there is more than one, they won't work right.
  '(ecb-options-version "2.32")
  '(ecb-source-path (quote (("/" "/") "/home/ddur/perforce/mcl/component/ttnapplication/main/Munich/content/navx/models/siena/mirror/lib/mirror/controllers" "/home/ddur/perforce/nav3-base/fsbc/scc-common/main/Munich/content/nav3/packages/mirror/lib/mirror/controllers")))
+ '(js2-allow-keywords-as-property-names nil)
  '(js2-basic-offset 4)
- '(js2-mode-escape-quotes nil))
+ '(js2-highlight-level 3)
+ '(js2-mode-escape-quotes nil)
+ '(js2-strict-missing-semi-warning nil))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
