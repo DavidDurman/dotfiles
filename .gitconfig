@@ -1,9 +1,12 @@
 [user]
-	name = DavidDurman
-	email = daviddurman@seznam.cz
+	name = David Durman
+	email = ddurman@ebay.com
+[core]
+	autocrlf = false
 [color]
 	status = auto
 	branch = auto
+	diff = auto
 [alias]
   co = checkout
   ci = commit

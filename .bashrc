@@ -3,7 +3,7 @@
 # for examples
 
 # If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+[ -z "$PS1" ] && exit
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -38,6 +38,15 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
+# switch to the topmost folder from Finder
+function ff { osascript -e 'tell application "Finder"'\
+ -e "if (${1-1} <= (count Finder windows)) then"\
+ -e "get POSIX path of (target of window ${1-1} as alias)"\
+ -e 'else' -e 'get POSIX path of (desktop as alias)'\
+ -e 'end if' -e 'end tell'; };\
+
+function cdff { cd "`ff $@`"; };
+
 ### COLORS ###
           RED="\[\033[0;31m\]"
     LIGHT_RED="\[\033[1;31m\]"
@@ -61,7 +70,6 @@ fi
 export PS1="${LIGHT_RED}\u${LIGHT_GRAY}@${GREEN}\h${NO_COLOR} ${LIGHT_BLUE}\w${NO_COLOR}"' (`git branch 2>/dev/null| grep \* | tr -d \*\ `)'"${NO_COLOR}\$ "
 export FIGNORE='~:.bak' # ignore files ending with these suffixes
 export HISTIGNORE=ls:ll:la:mc:emacs
-export EDITOR=emacs
 export PAGER=less
 export BROWSER=google-chrome
 # don't put duplicate lines in the history. See bash(1) for more options
